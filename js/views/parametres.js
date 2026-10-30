@@ -59,6 +59,15 @@ Views.parametres = {
           </div>
         </section>
 
+        <section class="card">
+          <h2>Rappels automatiques</h2>
+          <div class="reminder-settings">
+            <label class="check"><input type="checkbox" name="ra_veille" ${s.rappelsAuto?.veille ? 'checked' : ''}> <strong>La veille</strong> <span class="muted">24 h avant la séance</span></label>
+            <label class="check"><input type="checkbox" name="ra_h30" ${s.rappelsAuto?.h30 ? 'checked' : ''}> <strong>30 minutes avant</strong> <span class="muted">avec le lien de connexion pour les séances en visio</span></label>
+          </div>
+          <p class="hint">Au moment prévu, le rappel s'affiche en bas à droite de l'écran avec un bouton « Envoyer », sur l'ordinateur ou le téléphone où l'application est ouverte. Les textes se modifient dans l'écran WhatsApp, rubrique « Modèles de messages ».</p>
+        </section>
+
         <div class="sticky-save"><button class="btn primary big" type="submit">${icon('check', 18)} Enregistrer les paramètres</button></div>
       </form>
 
@@ -78,6 +87,8 @@ Views.parametres = {
       const horaires = {};
       JOURS.forEach(([d]) => { horaires[d] = { ouvert: !!v[`h${d}o`], debut: v[`h${d}d`] || '09:00', fin: v[`h${d}f`] || '18:00' }; });
       Object.keys(v).filter(k => /^h\d/.test(k)).forEach(k => delete v[k]);
+      v.rappelsAuto = { veille: !!v.ra_veille, h30: !!v.ra_h30 };
+      delete v.ra_veille; delete v.ra_h30;
       Object.assign(Store.settings, v, { horaires, tarif: Number(v.tarif) || 0, duree: Number(v.duree) || 50, delaiPaiement: Number(v.delaiPaiement) || 0 });
       Store.save(); UI.toast('Paramètres enregistrés'); App.renderNav();
     };

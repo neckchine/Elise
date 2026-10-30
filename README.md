@@ -34,7 +34,9 @@ La page publique de réservation est accessible à l'adresse `…/index.html#/re
 ## À savoir (version actuelle = prototype fonctionnel)
 
 - **Données stockées dans le navigateur** de l'appareil utilisé. Faites des sauvegardes régulières (Paramètres → Télécharger une sauvegarde).
-- **WhatsApp** : l'application ouvre WhatsApp avec le message déjà rédigé ; il reste à appuyer sur « Envoyer ». L'envoi 100 % automatique (rappels la veille sans intervention) nécessite l'API WhatsApp Business (payante, avec un serveur).
+- **Rappels automatiques** (Paramètres) : la veille (24 h avant) et 30 minutes avant chaque séance, avec le lien de visio si besoin. Au bon moment, le rappel s'affiche dans un encadré, sur tous les écrans ; un clic l'envoie par WhatsApp. Chaque rendez-vous indique l'état de ses rappels (prévu, à envoyer, envoyé).
+- **Envoi sans aucun clic** : il faudra brancher l'API WhatsApp Business (Meta) sur un serveur. Les rappels sont déjà planifiés et suivis par l'application ; il restera à remplacer le bouton « Envoyer » par l'envoi direct. Meta exige des modèles de messages validés à l'avance pour les rappels.
+- **WhatsApp (messages manuels)** : l'application ouvre WhatsApp avec le message déjà rédigé ; il reste à appuyer sur « Envoyer ».
 - **Appels vidéo WhatsApp** : WhatsApp ne permet pas de lancer un appel vidéo depuis un site. L'application fournit donc un lien de visio (Jitsi Meet par défaut, modifiable), envoyé par WhatsApp.
 - **Réservation en ligne** : pour que vos clients réservent depuis chez eux, l'application doit être hébergée en ligne avec une base de données partagée (étape suivante).
 - **Données de santé / RGPD** : pour une mise en ligne, les données des patients doivent être hébergées chez un **hébergeur certifié HDS** (Hébergeur de Données de Santé), avec connexion sécurisée.
@@ -50,6 +52,7 @@ js/store.js         stockage des données, numérotation des factures, créneaux
 js/demo.js          données d'exemple
 js/ui.js            icônes, fenêtres, notifications
 js/actions.js       actions communes : RDV, factures, relances, messages, clients
+js/reminders.js     rappels automatiques (veille et 30 min avant)
 js/views/*.js       un fichier par écran
 js/app.js           navigation et démarrage
 ```

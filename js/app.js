@@ -56,6 +56,7 @@ const App = {
     Views[r.view].render(fresh, { param: r.param, publicMode: r.public });
     document.title = `${Views[r.view].title} · Cabinet`;
     if (!r.public) this.renderNav();
+    Reminders.renderTray();
     document.body.classList.remove('nav-open');
   },
 
@@ -68,6 +69,7 @@ const App = {
     document.getElementById('nav-backdrop').onclick = () => document.body.classList.remove('nav-open');
     // Synchronise si l'application est ouverte dans plusieurs onglets (ex. page de réservation)
     window.addEventListener('storage', (e) => { if (e.key === STORAGE_KEY && !document.querySelector('.modal-backdrop')) { Store.load(); this.refresh(); } });
+    Reminders.start();
     this.refresh();
   },
 };

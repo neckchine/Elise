@@ -1,6 +1,6 @@
 /* Messagerie WhatsApp : modèles de messages et historique des envois. */
 const MESSAGE_TYPES = {
-  libre: 'Message libre', rappel: 'Rappel de RDV', confirmation: 'Confirmation de RDV',
+  libre: 'Message libre', rappel: 'Rappel la veille', rappel30: 'Rappel 30 min avant', confirmation: 'Confirmation de RDV',
   visio: 'Lien de visio', relance: 'Relance de facture', facture: 'Envoi de facture',
 };
 
@@ -50,7 +50,7 @@ Views.messages = {
     const update = (rebuildRefs) => {
       const clientId = form.clientId.value, type = form.type.value;
       const client = Store.get('clients', clientId);
-      const needsEvent = ['rappel', 'confirmation', 'visio'].includes(type);
+      const needsEvent = ['rappel', 'rappel30', 'confirmation', 'visio'].includes(type);
       const needsInvoice = type === 'relance';
       ctx.hidden = !clientId || !(needsEvent || needsInvoice);
       if (rebuildRefs) {
@@ -85,7 +85,10 @@ Views.messages = {
           const f = Store.get('factures', form.ref.value);
           Store.upsert('factures', { id: f.id, relances: [...(f.relances || []), new Date().toISOString()] });
         }
-        if (type === 'rappel' && form.ref.value) Store.upsert('events', { id: form.ref.value, rappelEnvoye: new Date().toISOString() });
+        if ((type === 'rappel' || type === 'rappel30') && form.ref.value) {
+          const ev = Store.get('events', form.ref.value);
+          Store.upsert('events', { id: ev.id, rappels: { ...(ev.rappels || {}), [type === 'rappel' ? 'veille' : 'h30']: new Date().toISOString() } });
+        }
         App.refresh();
       }
     };

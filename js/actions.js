@@ -10,6 +10,8 @@ const Actions = {
       v.quand = `le ${U.fmtDate(event.start, { weekday: 'long', day: 'numeric', month: 'long' })} à ${U.fmtTime(event.start)}`;
       v.lieu = event.mode === 'visio' ? ' en visio' : ` au cabinet (${s.adresse.replace(/\n/g, ', ')})`;
       v.lien = event.visioUrl || lien || '';
+      v.heure = U.fmtTime(event.start);
+      v.acces = event.mode === 'visio' && v.lien ? ` Lien de connexion : ${v.lien}` : '';
     }
     if (facture) {
       v.numero = facture.numero || '';
@@ -62,7 +64,7 @@ const Actions = {
       clientId: ev.clientId, type: 'rappel', title: 'Rappel de rendez-vous',
       text: U.fill(tpl, Actions.vars({ client, event: ev })),
       email: 'Rappel de votre rendez-vous',
-      onSent: () => Store.upsert('events', { id: ev.id, rappelEnvoye: new Date().toISOString() }),
+      onSent: () => Store.upsert('events', { id: ev.id, rappels: { ...(Store.get('events', ev.id).rappels || {}), veille: new Date().toISOString() } }),
     });
   },
 
@@ -131,6 +133,7 @@ const Actions = {
           </div>
           ${isNew ? `<label class="check"><input type="checkbox" name="repeat"> Répéter chaque semaine pendant
             <input type="number" name="repeatN" value="4" min="2" max="52" class="inline-num"> semaines</label>` : ''}
+          ${!isNew && ev.type === 'rdv' && ev.statut === 'prevu' ? `<p class="reminder-line"><span class="lbl">Rappels</span> ${Reminders.chips(ev) || '<span class="muted">désactivés (Paramètres)</span>'}</p>` : ''}
         </div>
 
         <label class="field"><span>Notes ${ev.type === 'rdv' ? '(privées, jamais envoyées)' : ''}</span><textarea name="notes" rows="2">${U.esc(ev.notes || '')}</textarea></label>

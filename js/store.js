@@ -25,7 +25,9 @@ const DEFAULT_SETTINGS = {
     6: { ouvert: false, debut: '09:00', fin: '12:00' },
     0: { ouvert: false, debut: '09:00', fin: '12:00' },
   },
+  rappelsAuto: { veille: true, h30: true },
   modeles: {
+    rappel30: 'Bonjour {{prenom}}, petit rappel : notre séance commence dans 30 minutes, à {{heure}}{{lieu}}.{{acces}} À tout de suite, {{praticien}}',
     rappel: 'Bonjour {{prenom}}, je vous rappelle notre rendez-vous {{quand}}{{lieu}}. En cas d\'empêchement, merci de me prévenir 24h à l\'avance. {{praticien}}',
     confirmation: 'Bonjour {{prenom}}, votre rendez-vous du {{quand}} est bien confirmé. À bientôt, {{praticien}}',
     visio: 'Bonjour {{prenom}}, voici le lien pour notre séance en visio {{quand}} : {{lien}} — Il suffit de cliquer, aucune installation n\'est nécessaire. {{praticien}}',

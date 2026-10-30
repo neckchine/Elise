@@ -8,8 +8,9 @@ Views.dashboard = {
     const today = U.startOfDay(now);
     const todays = Store.eventsBetween(today, U.addDays(today, 1));
     const seances = todays.filter(e => e.type === 'rdv' && e.statut !== 'annule');
-    const rappels = Store.eventsBetween(U.addDays(today, 1), U.addDays(today, 4))
+    const rappels = Store.eventsBetween(now, U.addDays(today, 3))
       .filter(e => e.type === 'rdv' && e.statut === 'prevu');
+    const dueIds = new Set(Reminders.due(now).map(d => d.event.id));
     const demandes = Store.list('demandes').filter(d => d.statut === 'attente');
     const factures = Store.list('factures');
     const retard = factures.filter(f => Store.invoiceStatus(f) === 'retard');
@@ -65,12 +66,15 @@ Views.dashboard = {
 
           ${rappels.length ? `
           <section class="inbox-group">
-            <h2>Rappels à envoyer <span class="count">${rappels.filter(e => !e.rappelEnvoye).length}</span></h2>
+            <h2>Rappels clients <span class="count">${dueIds.size ? dueIds.size + ' à envoyer' : ''}</span></h2>
             <ul class="list">${rappels.map(e => `
               <li class="row">
                 <span class="grow"><strong>${U.esc(Store.clientName(e.clientId))}</strong>
-                  <span class="meta">${U.fmtDate(e.start)} · ${U.fmtTime(e.start)}${e.rappelEnvoye ? ' · rappel envoyé' : ''}</span></span>
-                <button class="btn small ${e.rappelEnvoye ? 'ghost' : 'whatsapp'}" data-remind="${e.id}">${icon('whatsapp', 16)} ${e.rappelEnvoye ? 'Renvoyer' : 'Rappeler'}</button>
+                  <span class="meta">Séance ${U.sameDay(e.start, now) ? "aujourd'hui" : U.fmtDate(e.start)} à ${U.fmtTime(e.start)}</span>
+                  <span class="reminder-chips">${Reminders.chips(e)}</span></span>
+                ${dueIds.has(e.id)
+                  ? `<button class="btn small whatsapp" data-autosend="${e.id}">${icon('whatsapp', 16)} Envoyer</button>`
+                  : `<button class="btn small ghost" data-remind="${e.id}" title="Écrire un message personnalisé">${icon('whatsapp', 16)} Écrire</button>`}
               </li>`).join('')}</ul>
           </section>` : ''}
 
@@ -103,7 +107,7 @@ Views.dashboard = {
 
     el.querySelector('[data-new-rdv]').onclick = () => Actions.openEvent();
     el.addEventListener('click', (e) => {
-      const t = e.target.closest('[data-honore],[data-facturer],[data-accept],[data-refuse],[data-remind],[data-relance],[data-stop],[data-ev],[data-free]');
+      const t = e.target.closest('[data-honore],[data-facturer],[data-accept],[data-refuse],[data-remind],[data-autosend],[data-relance],[data-stop],[data-ev],[data-free]');
       if (!t) return;
       if (t.dataset.stop !== undefined) return;
       if (t.dataset.honore) return Actions.setEventStatus(t.dataset.honore, 'honore');
@@ -111,6 +115,7 @@ Views.dashboard = {
       if (t.dataset.accept) return Actions.acceptDemande(t.dataset.accept);
       if (t.dataset.refuse) return Actions.refuseDemande(t.dataset.refuse);
       if (t.dataset.remind) return Actions.sendReminder(t.dataset.remind);
+      if (t.dataset.autosend) { const d = Reminders.due().find(x => x.event.id === t.dataset.autosend); if (d) Reminders.send(d.event.id, d.key); return; }
       if (t.dataset.relance) return Actions.relance(t.dataset.relance);
       if (t.dataset.free) return Actions.openEvent({ start: t.dataset.free });
       if (t.dataset.ev) return Actions.openEvent({ id: t.dataset.ev });
