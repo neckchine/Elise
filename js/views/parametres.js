@@ -11,7 +11,7 @@ Views.parametres = {
       <form class="form" id="set-form">
         <div class="cols">
           <section class="card">
-            <h2>${icon('user')} Mon cabinet</h2>
+            <h2>Mon cabinet</h2>
             <div class="grid2">
               <label class="field"><span>Nom affiché</span><input name="nom" value="${U.esc(s.nom)}"></label>
               <label class="field"><span>Profession</span><input name="profession" value="${U.esc(s.profession)}" list="professions"></label>
@@ -27,7 +27,7 @@ Views.parametres = {
           </section>
 
           <section class="card">
-            <h2>${icon('euro')} Séances et facturation</h2>
+            <h2>Séances et facturation</h2>
             <div class="grid3">
               <label class="field"><span>Tarif par défaut (€)</span><input name="tarif" type="number" min="0" value="${s.tarif}"></label>
               <label class="field"><span>Durée (min)</span><input name="duree" type="number" min="10" step="5" value="${s.duree}"></label>
@@ -45,7 +45,7 @@ Views.parametres = {
         </div>
 
         <section class="card">
-          <h2>${icon('clock')} Horaires de consultation</h2>
+          <h2>Horaires de consultation</h2>
           <p class="muted">Utilisés pour proposer des créneaux sur votre page de prise de rendez-vous en ligne.</p>
           <div class="hours-grid">
             ${JOURS.map(([d, l]) => {
@@ -63,7 +63,7 @@ Views.parametres = {
       </form>
 
       <section class="card">
-        <h2>${icon('download')} Mes données</h2>
+        <h2>Mes données</h2>
         <p>Vos données sont enregistrées <strong>uniquement sur cet appareil</strong>, dans ce navigateur. Pensez à faire une sauvegarde régulièrement.</p>
         <div class="btn-row">
           <button class="btn ghost" data-backup>${icon('download', 18)} Télécharger une sauvegarde</button>

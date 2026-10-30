@@ -30,7 +30,7 @@ Views.clients = {
             <span class="grow"><strong>${U.esc(c.prenom)} ${U.esc(c.nom)}</strong><br>
               <span class="muted small">${U.esc(c.tel || 'pas de téléphone')} ${c.email ? '· ' + U.esc(c.email) : ''}</span></span>
             <span class="hide-sm muted small">${next ? `Prochain RDV : ${U.fmtDate(next.start)} ${U.fmtTime(next.start)}` : ''}</span>
-            ${due ? `<span class="badge badge-orange">${U.fmtMoney(due)} dû</span>` : ''}
+            ${due ? `<span class="st st-orange">${U.fmtMoney(due)} dû</span>` : ''}
             ${icon('right', 18)}
           </li>`;
         }).join('')}</ul>` : UI.empty(q ? 'Aucun client ne correspond.' : 'Aucun client pour le moment.')}
@@ -57,7 +57,7 @@ Views.clients = {
     const evRow = (e) => `<li class="row" data-ev="${e.id}">
       <span class="time">${U.fmtDate(e.start, { day: '2-digit', month: '2-digit', year: '2-digit' })}</span>
       <span class="grow">${U.fmtTime(e.start)} · ${e.mode === 'visio' ? 'Visio' : 'Cabinet'}</span>
-      ${UI.badge(e.statut)} ${e.factureId ? '<span class="badge badge-green">Facturé</span>' : ''}</li>`;
+      ${UI.badge(e.statut)} ${e.factureId ? '<span class="st st-green">Facturé</span>' : ''}</li>`;
 
     el.innerHTML = `
       <a class="back" href="#/clients">${icon('left', 18)} Tous les clients</a>
@@ -77,7 +77,7 @@ Views.clients = {
       <div class="cols">
         <div class="stack">
           <section class="card">
-            <h2>${icon('user')} Informations</h2>
+            <h2>Informations</h2>
             <dl class="info">
               ${c.naissance ? `<dt>Naissance</dt><dd>${U.fmtDateShort(c.naissance)}</dd>` : ''}
               ${c.adressePar ? `<dt>Adressé(e) par</dt><dd>${U.esc(c.adressePar)}</dd>` : ''}
@@ -88,17 +88,17 @@ Views.clients = {
             ${c.notes ? `<p class="quote">${U.nl2br(c.notes)}</p>` : ''}
           </section>
           <section class="card">
-            <h2>${icon('calendar')} Prochains rendez-vous</h2>
+            <h2>Prochains rendez-vous</h2>
             ${upcoming.length ? `<ul class="list clickable">${upcoming.map(evRow).join('')}</ul>` : UI.empty('Aucun rendez-vous prévu.')}
           </section>
           <section class="card">
-            <h2>${icon('clock')} Historique</h2>
+            <h2>Historique</h2>
             ${past.length ? `<ul class="list clickable">${past.map(evRow).join('')}</ul>` : UI.empty('Pas encore de séance.')}
           </section>
         </div>
         <div class="stack">
           <section class="card">
-            <h2>${icon('invoice')} Factures <button class="btn small ghost push" data-inv>${icon('plus', 16)} Facture</button></h2>
+            <h2>Factures <button class="btn small ghost push" data-inv>${icon('plus', 16)} Facture</button></h2>
             ${factures.length ? `<ul class="list clickable">${factures.map(f => `
               <li class="row" data-f="${f.id}"><span class="grow"><strong>${U.esc(f.numero || 'Brouillon')}</strong>
                 <span class="muted">· ${U.fmtDateShort(f.date)}</span></span>
@@ -106,14 +106,14 @@ Views.clients = {
               : UI.empty('Aucune facture.')}
           </section>
           <section class="card">
-            <h2>${icon('letter')} Courriers <button class="btn small ghost push" data-letter>${icon('plus', 16)} Courrier</button></h2>
+            <h2>Courriers <button class="btn small ghost push" data-letter>${icon('plus', 16)} Courrier</button></h2>
             ${courriers.length ? `<ul class="list clickable">${courriers.map(x => `
               <li class="row" data-c="${x.id}"><span class="grow"><strong>${U.esc(x.objet)}</strong><br>
                 <span class="muted small">À ${U.esc(x.destinataire.split('\n')[0])} · ${U.fmtDateShort(x.date)}</span></span></li>`).join('')}</ul>`
               : UI.empty('Aucun courrier.')}
           </section>
           <section class="card">
-            <h2>${icon('chat')} Derniers messages</h2>
+            <h2>Derniers messages</h2>
             ${messages.length ? `<ul class="list">${messages.map(m => `
               <li class="row"><span class="grow small">${U.esc(m.texte.slice(0, 110))}${m.texte.length > 110 ? '…' : ''}<br>
                 <span class="muted">${U.fmtDate(m.date)} · ${m.canal === 'email' ? 'E-mail' : 'WhatsApp'}</span></span></li>`).join('')}</ul>`

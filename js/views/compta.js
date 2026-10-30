@@ -31,15 +31,15 @@ Views.compta = {
         </div>
       </div>
 
-      <div class="stats">
-        <div class="stat"><span class="stat-ico ok">${icon('euro')}</span><span><b>${U.fmtMoney(totR)}</b> recettes ${y}</span></div>
-        <div class="stat"><span class="stat-ico warn">${icon('invoice')}</span><span><b>${U.fmtMoney(totD)}</b> dépenses ${y}</span></div>
-        <div class="stat"><span class="stat-ico">${icon('chart')}</span><span><b>${U.fmtMoney(totR - totD)}</b> résultat</span></div>
-        <div class="stat"><span class="stat-ico">${icon('clock')}</span><span><b>${U.fmtMoney(aEnc)}</b> reste à encaisser</span></div>
-      </div>
+      <dl class="ledger wide">
+        <div><dt>Recettes ${y}</dt><dd>${U.fmtMoney(totR)}</dd></div>
+        <div><dt>Dépenses ${y}</dt><dd>− ${U.fmtMoney(totD)}</dd></div>
+        <div class="is-total"><dt>Résultat</dt><dd>${U.fmtMoney(totR - totD)}</dd></div>
+        <div><dt>Reste à encaisser</dt><dd>${U.fmtMoney(aEnc)}</dd></div>
+      </dl>
 
       <section class="card">
-        <h2>${icon('chart')} Mois par mois</h2>
+        <h2>Mois par mois</h2>
         <div class="bars" role="img" aria-label="Recettes et dépenses par mois">
           ${months.map(x => `<div class="bar-group" title="${U.monthName(x.m)} : ${U.fmtMoney(x.r)} de recettes, ${U.fmtMoney(x.d)} de dépenses">
             <div class="bar-pair">
@@ -53,7 +53,7 @@ Views.compta = {
 
       <div class="cols">
         <section class="card flush">
-          <h2 class="pad">${icon('euro')} Recettes encaissées</h2>
+          <h2 class="pad">Recettes encaissées</h2>
           ${recettes.length ? `<div class="table-wrap"><table class="table">
             <thead><tr><th>Date</th><th>Client</th><th>Facture</th><th>Mode</th><th class="right">Montant</th></tr></thead>
             <tbody>${[...recettes].sort((a, b) => b.payeeLe.localeCompare(a.payeeLe)).map(f => `<tr data-f="${f.id}">
@@ -62,7 +62,7 @@ Views.compta = {
           </table></div>` : UI.empty('Aucune recette encaissée cette année.')}
         </section>
         <section class="card flush">
-          <h2 class="pad">${icon('invoice')} Dépenses</h2>
+          <h2 class="pad">Dépenses</h2>
           ${depenses.length ? `<div class="table-wrap"><table class="table">
             <thead><tr><th>Date</th><th>Libellé</th><th>Catégorie</th><th class="right">Montant</th><th></th></tr></thead>
             <tbody>${depenses.map(d => `<tr data-d="${d.id}">

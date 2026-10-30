@@ -16,7 +16,7 @@ Views.visio = {
       </div>
 
       <section class="card">
-        <h2>${icon('calendar')} Prochaines séances en visio</h2>
+        <h2>Prochaines séances en visio</h2>
         ${list.length ? `<ul class="list">${list.map(e => {
           const soon = new Date(e.start).getTime() - now < 15 * 60000;
           return `<li class="row wrap">
@@ -31,7 +31,7 @@ Views.visio = {
       </section>
 
       <section class="card">
-        <h2>${icon('chat')} Et les appels vidéo WhatsApp ?</h2>
+        <h2>Et les appels vidéo WhatsApp ?</h2>
         <p>Vous pouvez aussi faire la séance directement par appel vidéo WhatsApp depuis votre téléphone :
           envoyez le rappel depuis l'agenda, puis appelez votre client à l'heure prévue. WhatsApp ne permet pas de lancer
           un appel vidéo depuis un site web, c'est pourquoi l'application vous propose en plus un lien de visio qui

@@ -77,7 +77,7 @@ const UI = {
     const root = document.getElementById('toast-root');
     const t = document.createElement('div');
     t.className = `toast toast-${type}`;
-    t.innerHTML = `${icon(type === 'ok' ? 'check' : 'bell', 18)}<span>${U.esc(msg)}</span>`;
+    t.innerHTML = `<span>${U.esc(msg)}</span>`;
     root.appendChild(t);
     setTimeout(() => t.classList.add('out'), 2600);
     setTimeout(() => t.remove(), 3000);
@@ -90,7 +90,7 @@ const UI = {
       attente: ['À valider', 'orange'],
     };
     const [label, color] = map[status] || [status, 'grey'];
-    return `<span class="badge badge-${color}">${label}</span>`;
+    return `<span class="st st-${color}">${label}</span>`;
   },
 
   clientOptions(selected, { allowEmpty = true } = {}) {

@@ -16,7 +16,7 @@ Views.messages = {
       </div>
       <div class="cols">
         <section class="card">
-          <h2>${icon('whatsapp')} Nouveau message</h2>
+          <h2>Nouveau message</h2>
           <form class="form" id="msg-form">
             <label class="field"><span>Destinataire</span><select name="clientId" required>${UI.clientOptions('')}</select></label>
             <label class="field"><span>Type de message</span>
@@ -27,16 +27,16 @@ Views.messages = {
           </form>
         </section>
         <section class="card">
-          <h2>${icon('clock')} Historique</h2>
+          <h2>Historique</h2>
           ${history.length ? `<ul class="list">${history.map(m => `
             <li class="row"><span class="grow">
-              <strong>${U.esc(Store.clientName(m.clientId))}</strong> <span class="badge badge-grey">${MESSAGE_TYPES[m.type] || m.type}</span>
+              <strong>${U.esc(Store.clientName(m.clientId))}</strong> <span class="st st-grey">${MESSAGE_TYPES[m.type] || m.type}</span>
               <span class="muted small">· ${m.canal === 'email' ? 'E-mail' : 'WhatsApp'} · ${U.fmtDate(m.date)} ${U.fmtTime(m.date)}</span><br>
               <span class="small">${U.esc(m.texte)}</span></span></li>`).join('')}</ul>` : UI.empty('Aucun message envoyé pour le moment.')}
         </section>
       </div>
       <section class="card">
-        <h2>${icon('settings')} Modèles de messages</h2>
+        <h2>Modèles de messages</h2>
         <p class="muted">Variables disponibles : {{prenom}}, {{nom}}, {{quand}}, {{lieu}}, {{lien}}, {{numero}}, {{montant}}, {{echeance}}, {{praticien}}</p>
         <form class="form" id="tpl-form">
           ${Object.entries(Store.settings.modeles).map(([k, v]) => `

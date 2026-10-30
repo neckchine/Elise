@@ -49,7 +49,7 @@ Views.courriers = {
           <button class="tpl card" data-tpl="${k}">${icon('letter', 26)}<strong>${t.label}</strong></button>`).join('')}
       </div>
       <section class="card flush">
-        <h2 class="pad">${icon('clock')} Courriers rédigés</h2>
+        <h2 class="pad">Courriers rédigés</h2>
         ${list.length ? `<ul class="list clickable">${list.map(x => `
           <li class="row" data-id="${x.id}">
             <span class="time">${U.fmtDateShort(x.date)}</span>
