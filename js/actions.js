@@ -332,39 +332,7 @@ const Actions = {
   },
 
   invoiceHTML(id) {
-    const f = Store.get('factures', id);
-    const s = Store.settings;
-    const c = Store.get('clients', f.clientId) || {};
-    return `
-      <div class="doc">
-        <div class="doc-head">
-          <div>
-            <div class="doc-name">${U.esc(s.nom)}</div>
-            <div>${U.esc(s.profession)}</div>
-            <div>${U.nl2br(s.adresse)}</div>
-            <div>${U.esc(s.tel)} · ${U.esc(s.email)}</div>
-            ${s.siret ? `<div>SIRET : ${U.esc(s.siret)}</div>` : ''}
-            ${s.adeli ? `<div>N° ADELI / RPPS : ${U.esc(s.adeli)}</div>` : ''}
-          </div>
-          <div class="doc-to">
-            <div class="doc-title">FACTURE</div>
-            <div>N° <strong>${U.esc(f.numero)}</strong></div>
-            <div>Date : ${U.fmtDateShort(f.date)}</div>
-            <br>
-            <div><strong>${U.esc(c.prenom)} ${U.esc(c.nom)}</strong></div>
-            <div>${U.nl2br(c.adresse || '')}</div>
-          </div>
-        </div>
-        <table class="doc-table">
-          <thead><tr><th>Désignation</th><th>Qté</th><th>Prix unitaire</th><th>Total</th></tr></thead>
-          <tbody>${f.lignes.map(l => `<tr><td>${U.esc(l.desc)}</td><td>${l.qte}</td><td>${U.fmtMoney(l.pu)}</td><td>${U.fmtMoney(l.qte * l.pu)}</td></tr>`).join('')}</tbody>
-          <tfoot><tr><td colspan="3">Total à payer</td><td>${U.fmtMoney(Store.invoiceTotal(f))}</td></tr></tfoot>
-        </table>
-        <p class="doc-small">${U.esc(s.mentionTVA)}</p>
-        ${f.statut === 'payee'
-          ? `<p class="doc-paid">Facture acquittée le ${U.fmtDateShort(f.payeeLe)} — ${U.esc(f.moyen || '')}</p>`
-          : `<p>À régler avant le <strong>${U.fmtDateShort(f.echeance)}</strong>${s.iban ? ` par virement : IBAN ${U.esc(s.iban)}` : ''}.</p>`}
-      </div>`;
+    return Docs.invoice(Store.get('factures', id));
   },
 
   printInvoice(id) {

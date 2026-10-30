@@ -408,17 +408,13 @@ input[type=checkbox], input[type=radio] { width: auto; accent-color: var(--encre
 .sticky-save { position: sticky; bottom: 16px; display: flex; justify-content: flex-start; margin-bottom: 20px; z-index: 5; }
 
 /* Aperçu d'un document (facture, courrier) quand l'impression n'est pas disponible */
-.doc-preview { background: #ffffff; color: #222222; border: 1px solid var(--rule); border-radius: 4px; padding: 28px; overflow-x: auto; font-size: .9rem; }
-.doc-preview .doc-head { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
-.doc-preview .doc-name, .doc-preview .doc-title { font-family: var(--f-display); font-weight: 500; color: #22427a; font-size: 1.3rem; }
-.doc-preview .doc-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-.doc-preview .doc-table th { border-bottom: 1px solid #22427a; text-align: left; padding: 6px 8px; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
-.doc-preview .doc-table td { padding: 6px 8px; border-bottom: 1px solid #dddddd; }
-.doc-preview .doc-table tfoot td { font-weight: 700; border-top: 1px solid #22427a; border-bottom: 0; }
-.doc-preview .doc-small { font-size: .8rem; color: #666666; }
-.doc-preview .doc-paid { display: inline-block; border: 1.5px solid #2f6a47; color: #2f6a47; padding: 4px 10px; font-weight: 700; }
-.doc-preview .signature { margin-left: 50%; margin-top: 24px; }
-.doc-preview .right { text-align: right; }
+.doc-preview { background: #ffffff; border: 1px solid var(--rule); border-radius: 4px; padding: 32px 30px; overflow-x: auto; }
+.color-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.color-row input[type=color] { width: 46px; height: 34px; padding: 2px; cursor: pointer; }
+.swatch { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--sheet); box-shadow: 0 0 0 1px var(--rule-strong); cursor: pointer; padding: 0; }
+.swatch:hover { box-shadow: 0 0 0 2px var(--encre); }
+.doc-settings { display: grid; grid-template-columns: auto 1fr; gap: 14px 24px; margin-bottom: 14px; align-items: start; }
+@media (max-width: 760px) { .doc-settings { grid-template-columns: 1fr; } .doc-preview { padding: 18px 14px; } }
 
 /* ---------- Écrans moyens ---------- */
 @media (max-width: 1180px) {

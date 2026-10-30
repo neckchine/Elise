@@ -128,24 +128,6 @@ Views.courriers = {
 
   print(id) {
     const x = Store.get('courriers', id);
-    const s = Store.settings;
-    UI.printDoc(x.objet, `
-      <div class="doc letter">
-        <div class="doc-head">
-          <div>
-            <div class="doc-name">${U.esc(s.nom)}</div>
-            <div>${U.esc(s.profession)}</div>
-            <div>${U.nl2br(s.adresse)}</div>
-            <div>${U.esc(s.tel)} · ${U.esc(s.email)}</div>
-            ${s.adeli ? `<div>N° ADELI / RPPS : ${U.esc(s.adeli)}</div>` : ''}
-          </div>
-          <div class="doc-to">${U.nl2br(x.destinataire)}</div>
-        </div>
-        <p class="right">${U.esc(s.adresse.split('\n').pop().replace(/^\d+\s*/, ''))}, le ${U.fmtDate(x.date, { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-        <p><strong>Objet : ${U.esc(x.objet)}</strong></p>
-        <div class="letter-body">${U.nl2br(x.corps)}</div>
-        <div class="signature">${U.esc(s.nom)}<br>${U.esc(s.profession)}</div>
-        <p class="doc-small">Document confidentiel — couvert par le secret professionnel.</p>
-      </div>`);
+    UI.printDoc(x.objet, Docs.letter(x));
   },
 };

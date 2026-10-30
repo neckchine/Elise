@@ -54,14 +54,21 @@ const CalCom = {
     const existing = Store.list('clients').find(c =>
       (email && c.email && c.email.toLowerCase() === email.toLowerCase()) ||
       (tel && c.tel && U.phoneIntl(c.tel) === U.phoneIntl(tel)));
+    // Adresse : champ personnalisé du formulaire Cal.com nommé « adresse » ou « address »
+    const adrKey = Object.keys(f).find(k => /adresse|address/i.test(k));
+    const adresse = adrKey && typeof f[adrKey] === 'string' ? f[adrKey].trim() : '';
     if (existing) {
-      if (!existing.tel && tel) Store.upsert('clients', { id: existing.id, tel });
+      const missing = {};
+      if (!existing.tel && tel) missing.tel = tel;
+      if (!existing.email && email) missing.email = email;
+      if (!existing.adresse && adresse) missing.adresse = adresse;
+      if (Object.keys(missing).length) Store.upsert('clients', { id: existing.id, ...missing });
       return existing.id;
     }
     const name = (a.name || f.name || 'Client Cal.com').trim();
     const [prenom, ...rest] = name.split(/\s+/);
     return Store.upsert('clients', {
-      prenom, nom: rest.join(' '), tel, email, notes: f.notes ? `Motif : ${f.notes}` : '',
+      prenom, nom: rest.join(' '), tel, email, adresse, notes: f.notes ? `Motif : ${f.notes}` : '',
       createdAt: new Date().toISOString(), source: 'calcom',
     }).id;
   },

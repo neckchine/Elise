@@ -23,6 +23,7 @@ Views.parametres = {
               <label class="field"><span>SIRET</span><input name="siret" value="${U.esc(s.siret)}"></label>
               <label class="field"><span>N° ADELI / RPPS (si concerné)</span><input name="adeli" value="${U.esc(s.adeli)}"></label>
             </div>
+            <label class="field"><span>Site internet (facultatif)</span><input name="site" value="${U.esc(s.site || '')}" placeholder="www.mon-cabinet.fr"></label>
             <datalist id="professions">${['Psychologue', 'Psychothérapeute', 'Psychopraticien(ne)', 'Sophrologue', 'Naturopathe', 'Hypnothérapeute', 'Ostéopathe', 'Diététicien(ne)', 'Art-thérapeute', 'Coach', 'Thérapeute de couple'].map(p => `<option>${p}</option>`).join('')}</datalist>
           </section>
 
@@ -40,6 +41,10 @@ Views.parametres = {
               ].map(m => `<option ${m === s.mentionTVA ? 'selected' : ''}>${m}</option>`).join('')}</select></label>
             <p class="hint">261-4-1° : professions de santé réglementées (psychologues, psychothérapeutes, ostéopathes…). 293 B : franchise en base pour les autres activités (sophrologie, naturopathie, coaching…). En cas de doute, demandez à votre comptable.</p>
             <label class="field"><span>IBAN (affiché sur les factures)</span><input name="iban" value="${U.esc(s.iban)}" placeholder="FR76 …"></label>
+            <div class="grid2">
+              <label class="field"><span>Banque</span><input name="banque" value="${U.esc(s.banque || '')}" placeholder="Ex. : Qonto"></label>
+              <label class="field"><span>BIC</span><input name="bic" value="${U.esc(s.bic || '')}"></label>
+            </div>
             <label class="field"><span>Service de visio</span><input name="visioBase" value="${U.esc(s.visioBase)}"></label>
           </section>
         </div>
@@ -57,6 +62,17 @@ Views.parametres = {
               </div>`;
             }).join('')}
           </div>
+        </section>
+
+        <section class="card">
+          <h2>Factures et courriers</h2>
+          <div class="doc-settings">
+            <label class="field color-field"><span>Couleur des documents</span>
+              <span class="color-row"><input type="color" name="docColor" value="${U.esc(s.docColor || '#22427a')}">
+                ${['#22427a', '#e8650f', '#2f6a47', '#7a3e6b', '#1f2430'].map(c => `<button type="button" class="swatch" data-swatch="${c}" style="background:${c}" aria-label="Couleur ${c}"></button>`).join('')}</span></label>
+            <label class="field"><span>Mentions complémentaires (une par ligne)</span><textarea name="mentions" rows="3" placeholder="Ex. : Toute séance non annulée 48 h à l'avance est due.">${U.esc(s.mentions || '')}</textarea></label>
+          </div>
+          <button type="button" class="btn ghost" data-preview-invoice>Voir un exemple de facture</button>
         </section>
 
         <section class="card">
@@ -109,6 +125,14 @@ Views.parametres = {
       delete v.ra_veille; delete v.ra_h30;
       Object.assign(Store.settings, v, { horaires, tarif: Number(v.tarif) || 0, duree: Number(v.duree) || 50, delaiPaiement: Number(v.delaiPaiement) || 0 });
       Store.save(); UI.toast('Paramètres enregistrés'); App.renderNav();
+    };
+    el.querySelectorAll('[data-swatch]').forEach(b => b.onclick = () => { el.querySelector('[name=docColor]').value = b.dataset.swatch; });
+    el.querySelector('[data-preview-invoice]').onclick = () => {
+      const keep = Store.settings.docColor, keepM = Store.settings.mentions;
+      Store.settings.docColor = el.querySelector('[name=docColor]').value;
+      Store.settings.mentions = el.querySelector('[name=mentions]').value;
+      UI.printDoc('Exemple de facture', Docs.invoice(Docs.sample()));
+      Store.settings.docColor = keep; Store.settings.mentions = keepM;
     };
     el.querySelector('#cal-form').onsubmit = async (e) => {
       e.preventDefault();

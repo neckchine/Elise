@@ -47,7 +47,7 @@ La page publique de réservation est accessible à l'adresse `…/index.html#/re
 ```
 index.html          page principale
 css/app.css         styles de l'application
-css/print.css       mise en page des factures et courriers imprimés
+js/documents.js     mise en page des factures et courriers (impression, PDF, aperçu)
 js/utils.js         dates, montants, liens WhatsApp / e-mail
 js/store.js         stockage des données, numérotation des factures, créneaux libres
 js/demo.js          données d'exemple

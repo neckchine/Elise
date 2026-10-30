@@ -109,11 +109,13 @@ const UI = {
     try { w = window.open('', '_blank'); } catch (e) { w = null; }
     // Si l'ouverture d'une fenêtre est bloquée, on affiche un aperçu du document
     if (!w) {
-      UI.modal({ title, wide: true, body: `<div class="doc-preview">${html}</div>` });
+      UI.modal({ title, wide: true, body: `<style>${DOC_CSS}</style><div class="doc-preview">${html}</div>` });
       return;
     }
     w.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${U.esc(title)}</title>
-      <link rel="stylesheet" href="${new URL('css/print.css', location.href)}"></head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+      <style>${PRINT_PAGE_CSS}${DOC_CSS}${Docs.pageFooterCSS(html)}</style></head>
       <body>${html}<script>window.onload=()=>setTimeout(()=>window.print(),300)<\/script></body></html>`);
     w.document.close();
   },
