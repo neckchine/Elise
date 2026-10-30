@@ -511,3 +511,8 @@ input[type=checkbox], input[type=radio] { width: auto; accent-color: var(--encre
   .reminder-tray.is-collapsed { left: auto; }
   .reminder-tray { left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: auto; max-width: none; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* ---------- Cal.com ---------- */
+.cal-status { font-size: .88rem; color: var(--ink-2); padding: 8px 12px; background: var(--paper); border-radius: 6px; margin: 0; }
+.cal-status.is-error { color: var(--red); background: var(--red-wash); }
+.cal-card { max-width: 720px; }

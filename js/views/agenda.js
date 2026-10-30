@@ -52,7 +52,7 @@ Views.agenda = {
             const name = e.type === 'perso' ? e.title : Store.clientName(e.clientId);
             return `<button class="evt ${cls}" data-ev="${e.id}"
                 style="top:${top}px;height:${height}px;left:calc(${lane / n * 100}% + 2px);width:calc(${100 / n}% - 4px)">
-                <span class="evt-time">${U.fmtTime(e.start)}${e.mode === 'visio' ? ' · visio' : ''}</span>
+                <span class="evt-time">${U.fmtTime(e.start)}${e.mode === 'visio' ? ' · visio' : ''}${e.source === 'calcom' ? ' · Cal.com' : ''}</span>
                 <span class="evt-title">${U.esc(name)}</span>
               </button>`;
           }).join('')}
@@ -78,6 +78,7 @@ Views.agenda = {
             <label><input type="radio" name="mode" value="jour" ${this.mode === 'jour' ? 'checked' : ''}><span>Jour</span></label>
             <label><input type="radio" name="mode" value="semaine" ${this.mode === 'semaine' ? 'checked' : ''}><span>Semaine</span></label>
           </div>
+          ${CalCom.connected() ? `<button class="btn ghost" data-calsync title="${U.esc(CalCom.statusText())}">Synchroniser Cal.com</button>` : ''}
           <button class="btn ghost" data-perso>${icon('plus', 18)} Perso</button>
           <button class="btn primary" data-new>${icon('plus', 18)} Rendez-vous</button>
         </div>
@@ -108,6 +109,7 @@ Views.agenda = {
     el.querySelector('[data-next]').onclick = () => { this.date = U.addDays(this.date, step); App.refresh(); };
     el.querySelector('[data-today]').onclick = () => { this.date = new Date(); App.refresh(); };
     el.querySelectorAll('[name=mode]').forEach(r => r.onchange = () => { this.mode = r.value; App.refresh(); });
+    el.querySelector('[data-calsync]')?.addEventListener('click', () => CalCom.sync());
     el.querySelector('[data-new]').onclick = () => Actions.openEvent({ start: U.fromDateTime(U.isoDate(this.date), '10:00') });
     el.querySelector('[data-perso]').onclick = () => Actions.openEvent({ type: 'perso', start: U.fromDateTime(U.isoDate(this.date), '12:00'), duree: 60 });
     el.querySelectorAll('[data-goto]').forEach(n => n.onclick = () => { this.date = new Date(n.dataset.goto + 'T00:00'); this.mode = 'jour'; App.refresh(); });

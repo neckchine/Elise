@@ -70,6 +70,7 @@ const App = {
     // Synchronise si l'application est ouverte dans plusieurs onglets (ex. page de réservation)
     window.addEventListener('storage', (e) => { if (e.key === STORAGE_KEY && !document.querySelector('.modal-backdrop')) { Store.load(); this.refresh(); } });
     Reminders.start();
+    CalCom.start();
     this.refresh();
   },
 };

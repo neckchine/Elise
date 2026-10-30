@@ -93,6 +93,7 @@ const Actions = {
 
     const body = `
       <form class="form" id="ev-form">
+        ${ev.source === 'calcom' ? `<p class="notice">Réservé via Cal.com${ev.calTitle ? ` (${U.esc(ev.calTitle)})` : ''}. Pour déplacer ou annuler ce rendez-vous, faites-le sur Cal.com : le client sera prévenu et l'agenda se mettra à jour.</p>` : ''}
         <div class="segmented" role="radiogroup">
           <label><input type="radio" name="type" value="rdv" ${ev.type === 'rdv' ? 'checked' : ''}><span>${icon('user', 16)} Rendez-vous client</span></label>
           <label><input type="radio" name="type" value="perso" ${ev.type === 'perso' ? 'checked' : ''}><span>${icon('calendar', 16)} Personnel</span></label>

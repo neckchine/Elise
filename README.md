@@ -35,6 +35,7 @@ La page publique de réservation est accessible à l'adresse `…/index.html#/re
 
 - **Données stockées dans le navigateur** de l'appareil utilisé. Faites des sauvegardes régulières (Paramètres → Télécharger une sauvegarde).
 - **Rappels automatiques** (Paramètres) : la veille (24 h avant) et 30 minutes avant chaque séance, avec le lien de visio si besoin. Au bon moment, le rappel s'affiche dans un encadré, sur tous les écrans ; un clic l'envoie par WhatsApp. Chaque rendez-vous indique l'état de ses rappels (prévu, à envoyer, envoyé).
+- **Cal.com** (Paramètres → Cal.com) : avec une clé API Cal.com, les réservations faites sur votre page Cal.com sont importées dans l'agenda (au démarrage puis toutes les 5 minutes), avec création de la fiche client. Les annulations et changements d'horaire sont repris. Les réservations en attente de confirmation ne sont importées qu'une fois confirmées sur Cal.com. La synchronisation ne fonctionne pas dans l'aperçu claude.ai, qui bloque les connexions vers d'autres sites : il faut ouvrir l'application elle-même.
 - **Envoi sans aucun clic** : il faudra brancher l'API WhatsApp Business (Meta) sur un serveur. Les rappels sont déjà planifiés et suivis par l'application ; il restera à remplacer le bouton « Envoyer » par l'envoi direct. Meta exige des modèles de messages validés à l'avance pour les rappels.
 - **WhatsApp (messages manuels)** : l'application ouvre WhatsApp avec le message déjà rédigé ; il reste à appuyer sur « Envoyer ».
 - **Appels vidéo WhatsApp** : WhatsApp ne permet pas de lancer un appel vidéo depuis un site. L'application fournit donc un lien de visio (Jitsi Meet par défaut, modifiable), envoyé par WhatsApp.
@@ -53,6 +54,7 @@ js/demo.js          données d'exemple
 js/ui.js            icônes, fenêtres, notifications
 js/actions.js       actions communes : RDV, factures, relances, messages, clients
 js/reminders.js     rappels automatiques (veille et 30 min avant)
+js/calcom.js        connexion Cal.com (import des réservations)
 js/views/*.js       un fichier par écran
 js/app.js           navigation et démarrage
 ```

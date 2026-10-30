@@ -24,7 +24,14 @@ Views.reservation = {
           <button class="btn ghost" data-copy>${icon('globe', 18)} Copier le lien</button>
           <a class="btn primary" href="#/reserver" target="_blank">Ouvrir la page client</a>
         </div>
-      </div>`}
+      </div>
+      ${CalCom.conf().lien ? `<section class="card cal-card">
+        <h2>Votre page Cal.com</h2>
+        <p>Vos clients peuvent aussi réserver sur Cal.com. Ces réservations arrivent dans l'agenda${CalCom.connected() ? '' : ' une fois la clé API renseignée dans les Paramètres'}.</p>
+        <p class="link-box">${U.esc(CalCom.conf().lien)}</p>
+        <div class="btn-row"><button class="btn ghost" data-copy-cal>Copier le lien</button>
+          <a class="btn ghost" href="${U.esc(CalCom.conf().lien)}" target="_blank" rel="noopener">Ouvrir Cal.com</a></div>
+      </section>` : `<p class="hint">Vous utilisez Cal.com ? <a href="#/parametres">Connectez-le dans les Paramètres</a> pour recevoir ces réservations dans l'agenda.</p>`}`}
 
       <div class="booking card">
         <div class="booking-head">
@@ -70,6 +77,9 @@ Views.reservation = {
     el.querySelectorAll('[data-slot]').forEach(b => b.onclick = () => {
       this.selected = b.dataset.slot; this.render(el, { publicMode });
       el.querySelector('#book-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    el.querySelector('[data-copy-cal]')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(CalCom.conf().lien).then(() => UI.toast('Lien copié'), () => UI.toast(CalCom.conf().lien));
     });
     el.querySelector('[data-copy]')?.addEventListener('click', () => {
       navigator.clipboard?.writeText(publicUrl).then(() => UI.toast('Lien copié'), () => UI.toast(publicUrl));

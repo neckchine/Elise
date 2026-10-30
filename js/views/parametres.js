@@ -71,6 +71,24 @@ Views.parametres = {
         <div class="sticky-save"><button class="btn primary big" type="submit">${icon('check', 18)} Enregistrer les paramètres</button></div>
       </form>
 
+      <section class="card" id="calcom">
+        <h2>Cal.com <span class="st ${CalCom.conf().lastError ? 'st-red' : CalCom.connected() ? 'st-green' : 'st-grey'}">${U.esc(CalCom.connected() && !CalCom.conf().lastError ? 'Connecté' : CalCom.conf().lastError ? 'Erreur' : 'Non connecté')}</span></h2>
+        <p>Les réservations faites sur votre page Cal.com arrivent automatiquement dans l'agenda, avec la fiche client. Les annulations et les changements d'horaire sont aussi repris.</p>
+        <form class="form" id="cal-form">
+          <div class="grid2">
+            <label class="field"><span>Clé API Cal.com</span><input name="apiKey" type="password" autocomplete="off" value="${U.esc(CalCom.conf().apiKey || '')}" placeholder="cal_live_…"></label>
+            <label class="field"><span>Lien de votre page de réservation</span><input name="lien" type="url" value="${U.esc(CalCom.conf().lien || '')}" placeholder="https://cal.com/votre-nom"></label>
+          </div>
+          <label class="check"><input type="checkbox" name="auto" ${CalCom.conf().auto !== false ? 'checked' : ''}> Synchroniser automatiquement toutes les 5 minutes</label>
+          <p class="hint">Pour créer la clé : Cal.com → Paramètres → Développeur → Clés API → « Ajouter ». La clé reste enregistrée sur cet appareil uniquement.</p>
+          <p class="cal-status ${CalCom.conf().lastError ? 'is-error' : ''}">${U.esc(CalCom.statusText())}</p>
+          <div class="btn-row">
+            <button class="btn primary" type="submit">Enregistrer et synchroniser</button>
+            ${CalCom.connected() ? '<button class="btn ghost danger-text" type="button" data-cal-off>Déconnecter</button>' : ''}
+          </div>
+        </form>
+      </section>
+
       <section class="card">
         <h2>Mes données</h2>
         <p>Vos données sont enregistrées <strong>uniquement sur cet appareil</strong>, dans ce navigateur. Pensez à faire une sauvegarde régulièrement.</p>
@@ -92,6 +110,20 @@ Views.parametres = {
       Object.assign(Store.settings, v, { horaires, tarif: Number(v.tarif) || 0, duree: Number(v.duree) || 50, delaiPaiement: Number(v.delaiPaiement) || 0 });
       Store.save(); UI.toast('Paramètres enregistrés'); App.renderNav();
     };
+    el.querySelector('#cal-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const v = U.form(e.target);
+      Store.settings.calcom = { ...CalCom.conf(), apiKey: v.apiKey, lien: v.lien, auto: !!v.auto, lastError: '' };
+      Store.save();
+      if (!v.apiKey) { UI.toast('Indiquez la clé API Cal.com', 'warn'); return; }
+      e.target.querySelector('[type=submit]').textContent = 'Synchronisation…';
+      await CalCom.sync();
+    };
+    el.querySelector('[data-cal-off]')?.addEventListener('click', async () => {
+      if (!(await UI.confirm('Déconnecter Cal.com ? Les rendez-vous déjà importés restent dans l\'agenda.', { ok: 'Déconnecter' }))) return;
+      Store.settings.calcom = { lien: CalCom.conf().lien };
+      Store.save(); App.refresh();
+    });
     el.querySelector('[data-backup]').onclick = () =>
       U.download(`sauvegarde-cabinet-${U.today()}.json`, JSON.stringify(Store.data, null, 2), 'application/json');
     el.querySelector('[data-restore]').onchange = async (e) => {
