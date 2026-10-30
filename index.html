@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cabinet</title>
+  <meta name="description" content="Agenda, prise de rendez-vous, factures, comptabilité, courriers et WhatsApp pour les praticiens.">
+  <meta name="theme-color" content="#3f6f63">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="menu-btn" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <span class="brand-text">Mon cabinet</span>
+  </header>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21c-5-3-8-6.5-8-10.5A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 8 2.5C20 14.5 17 18 12 21z"/></svg>
+      </span>
+      <span class="brand-text">Mon cabinet</span>
+    </div>
+    <nav id="nav" aria-label="Navigation principale"></nav>
+    <div class="me" id="me"></div>
+  </aside>
+  <div id="nav-backdrop"></div>
+
+  <main id="main"></main>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" aria-live="polite"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/actions.js"></script>
+  <script src="js/views/dashboard.js"></script>
+  <script src="js/views/agenda.js"></script>
+  <script src="js/views/reservation.js"></script>
+  <script src="js/views/clients.js"></script>
+  <script src="js/views/factures.js"></script>
+  <script src="js/views/compta.js"></script>
+  <script src="js/views/courriers.js"></script>
+  <script src="js/views/messages.js"></script>
+  <script src="js/views/visio.js"></script>
+  <script src="js/views/parametres.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
