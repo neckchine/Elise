@@ -63,6 +63,12 @@ const U = {
   waLink(tel, text) {
     return `https://wa.me/${U.phoneIntl(tel)}?text=${encodeURIComponent(text)}`;
   },
+  // Ouvre un lien externe dans un nouvel onglet (plus fiable que window.open)
+  openLink(url) {
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+  },
   mailto(email, subject, body) {
     return `mailto:${email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   },

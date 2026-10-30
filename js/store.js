@@ -62,7 +62,7 @@ const Store = {
   },
 
   save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data)); } catch (e) { /* stockage indisponible : données gardées en mémoire */ }
   },
 
   get settings() { return this.data.settings; },

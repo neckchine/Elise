@@ -105,8 +105,13 @@ const UI = {
 
   // Ouvre une fenêtre imprimable (factures, courriers) -> l'utilisateur peut « Enregistrer en PDF »
   printDoc(title, html) {
-    const w = window.open('', '_blank');
-    if (!w) { UI.toast('Autorisez les fenêtres pop-up pour imprimer', 'warn'); return; }
+    let w = null;
+    try { w = window.open('', '_blank'); } catch (e) { w = null; }
+    // Si l'ouverture d'une fenêtre est bloquée, on affiche un aperçu du document
+    if (!w) {
+      UI.modal({ title, wide: true, body: `<div class="doc-preview">${html}</div>` });
+      return;
+    }
     w.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${U.esc(title)}</title>
       <link rel="stylesheet" href="${new URL('css/print.css', location.href)}"></head>
       <body>${html}<script>window.onload=()=>setTimeout(()=>window.print(),300)<\/script></body></html>`);

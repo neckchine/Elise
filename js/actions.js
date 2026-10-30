@@ -22,7 +22,7 @@ const Actions = {
   whatsapp(clientId, text, type = 'libre') {
     const c = Store.get('clients', clientId);
     if (!c || !c.tel) { UI.toast('Ce client n\'a pas de numéro de téléphone', 'warn'); return false; }
-    window.open(U.waLink(c.tel, text), '_blank');
+    U.openLink(U.waLink(c.tel, text));
     Store.upsert('messages', { clientId, texte: text, type, canal: 'whatsapp', date: new Date().toISOString() });
     return true;
   },

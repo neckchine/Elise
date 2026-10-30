@@ -90,8 +90,7 @@ Views.parametres = {
         const data = JSON.parse(await file.text());
         if (!data.settings || !Array.isArray(data.clients)) throw new Error();
         if (!(await UI.confirm('Remplacer toutes les données actuelles par cette sauvegarde ?', { ok: 'Restaurer', danger: true }))) return;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        Store.load(); UI.toast('Sauvegarde restaurée'); App.refresh(); App.renderNav();
+        Store.data = data; Store.save(); Store.load(); UI.toast('Sauvegarde restaurée'); App.refresh(); App.renderNav();
       } catch { UI.toast('Fichier de sauvegarde invalide', 'warn'); }
     };
     el.querySelector('[data-reset]').onclick = async () => {
